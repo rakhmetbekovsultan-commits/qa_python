@@ -1,19 +1,18 @@
 import pytest
 from main import BooksCollector
 
-@pytest.fixture
-def collector():
-    return BooksCollector()
-
 
 class TestBooksCollector:
 
     # 1. Добавление книг с допустимой длиной названия (граничные значения: 1 и 40)
     @pytest.mark.parametrize('book_name', ['А', 'А' * 40])
     def test_add_new_book_valid_name_length_success(self, collector, book_name):
-        collector.add_new_book(book_name)
-        assert book_name in collector.get_books_genre()
-        assert collector.get_books_genre()[book_name] == ''
+    collector.add_new_book(book_name)
+    assert book_name in collector.get_books_genre()
+
+    def test_add_new_book_has_empty_genre_by_default(self, collector, book_name):
+    collector.add_new_book(book_name)
+    assert collector.get_books_genre()[book_name] == ''
 
     # 2. Невалидная длина названия книги (0 и 41 символ)
     @pytest.mark.parametrize('invalid_name', ['', 'А' * 41])
@@ -91,5 +90,4 @@ class TestBooksCollector:
         collector.add_new_book('Дюна')
         collector.add_book_in_favorites('1984')
         collector.add_book_in_favorites('Дюна')
-
         assert collector.get_list_of_favorites_books() == ['1984', 'Дюна']
